@@ -1,25 +1,25 @@
-import { useEffect, useState } from "react"
-import Button from "./Button"
-
-function Hello() {
-  useEffect(() => {
-    console.log("hi1 :)")
-    return () => console.log("bye1 :(")
-  }, [])
-  useEffect(() => {
-    console.log("hi2 :)")
-    return () => console.log("bye2 :(")
-  }, [])
-  return <h1>Hello</h1>
-}
+import { useState } from "react"
 
 function App() {
-  const [showing, setShowing] = useState(false)
-  const onClick = () => setShowing((prev) => !prev)
+  const [toDo, setToDo] = useState("")
+  const [toDos, setToDos] = useState([])
+  const onChange = (event) => setToDo(event.target.value)
+  const onSubmit = (event) => {
+    event.preventDefault()
+    if (toDo === "") {
+      return
+    }
+    setToDo("")
+    setToDos((currentArray) => [toDo, ...currentArray])
+    console.log(toDos)
+  }
   return (
     <div>
-      {showing ? <Hello /> : null}
-      <Button onClick={onClick} text={showing ? "Hide" : "Show"} />
+      <h1>My To Dos ({toDos.length})</h1>
+      <form onSubmit={onSubmit}>
+        <input onChange={onChange} value={toDo} text="text" placeholder="Write your to do..." />
+        <button>Add To Do</button>
+      </form>
     </div>
   )
 }
